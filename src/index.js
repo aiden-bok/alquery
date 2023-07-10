@@ -44,6 +44,11 @@ const parseTable = (table) => {
     return ` FROM ${table}`
   } else if (table.constructor.name === 'Array' && table.length) {
     return ` FROM ${table.join(', ')}`
+  } else if (table?.constructor.name === 'Object') {
+    const keys = Object.keys(table)
+    if (keys.length) {
+      return ` FROM ${keys.join(', ')}`
+    }
   }
 
   throw new Error(
@@ -86,6 +91,7 @@ const select = (
 
 const alquery = {
   parseColumns,
+  parseTable,
   select
 }
 
