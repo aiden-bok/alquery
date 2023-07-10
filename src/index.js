@@ -84,6 +84,9 @@ const select = (
     .replace(/\s{1,}$/gi, ``)
 }
 
-const alquery = { select }
+const alquery = {
+  parseColumns,
+  select
+}
 
 export default alquery
