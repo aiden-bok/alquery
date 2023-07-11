@@ -72,7 +72,7 @@ const parseWhere = () => {
  * @throws {Error} Table name to use in the query statement is not specified!
  * @returns {String} `SELECT` query statement created using passed arguments.
  */
-const select = (
+const querySelect = (
   table,
   columns = null,
   where = null,
@@ -92,7 +92,7 @@ const select = (
 const alquery = {
   parseColumns,
   parseTable,
-  select
+  querySelect
 }
 
 export default alquery
