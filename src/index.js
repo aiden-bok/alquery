@@ -56,8 +56,72 @@ const parseTable = (table) => {
   )
 }
 
-const parseWhere = () => {
-  return ``
+/**
+ * Returns after converting it into where clause to be used in query statement using passed argument.
+ *
+ * @param {String|Array|Object} [where=null] Where condition to be used in query statement.
+ * @returns {String} String converted to where clause to be used in query statement.
+ */
+const parseWhere = (where = null) => {
+  let clause = ''
+
+  if (where) {
+    clause = ' WHERE'
+
+    if (where.constructor.name === 'String' && where.length) {
+      clause += ` ${where}`
+    } else if (where.constructor.name === 'Arrar' && where.length) {
+      where.forEach((condition, i) => {
+        if (condition.toString().toUpperCase() === 'OR') {
+          clause = clause.replace(/AND$/gi, 'OR')
+          return
+        }
+
+        clause += ` (${condition})`
+        clause += i < where.length - 1 ? ' AND ' : ''
+      })
+    } else if (where.constructor.name === 'Object') {
+      const columns = Object.keys(where)
+
+      if (columns.length) {
+        columns.forEach((column, i) => {
+          if (column.toString().toUpperCase() === 'OR') {
+            clause = clause.replace(/AND$/gi, 'OR')
+            return
+          }
+
+          const condition = where[column].toString() || ''
+
+          if (column.toString().indexOf('_') === 0) {
+            clause += ` (${condition})`
+          } else {
+            if (condition.search(/!=|<|>|<>|<=|>=|IS/gi) > -1) {
+              clause += ` (${column} ${condition})`
+            } else if (condition.search(/^AGAINST/gi) > -1) {
+              clause += ` (MATCH(${column}) ${condition})`
+            } else if (condition.search(/^BETWEEN|^NOT BETWEEN/gi) > -1) {
+              clause += ` (${column} ${condition})`
+            } else if (condition.search(/^IN|^NOT IN/gi) > -1) {
+              clause += ` (${column} ${condition})`
+            } else if (condition.search(/^LIKE|^NOT LIKE/gi) > -1) {
+              clause += ` (${column} ${condition})`
+            } else if (condition.search(/^MATCH/gi) > -1) {
+              clause += ` (MATCH(${column}) ${condition.replace(
+                /MATCH /gi,
+                ''
+              )})`
+            } else {
+              clause += ` (${column} = ${condition})`
+            }
+          }
+
+          clause += i < columns.length - 1 ? ' AND' : ''
+        })
+      }
+    }
+  }
+
+  return clause === ' WHERE' ? '' : clause
 }
 
 /**
@@ -92,6 +156,7 @@ const querySelect = (
 const alquery = {
   parseColumns,
   parseTable,
+  parseWhere,
   querySelect
 }
 
