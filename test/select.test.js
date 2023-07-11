@@ -162,3 +162,52 @@ test("querySelect('member', { age: 24, name: 'Aiden'}) returns 'SELECT age, name
   const call = alquery.querySelect(table, columns)
   expect(call).toBe('SELECT age, name FROM member')
 })
+
+// table: string, columns: array, where: null
+test("querySelect('member', ['age', 'name'], null) returns 'SELECT age, name FROM member'", () => {
+  const table = 'member'
+  const columns = ['age', 'name']
+  const where = null
+  const call = alquery.querySelect(table, columns, where)
+  expect(call).toBe('SELECT age, name FROM member')
+})
+
+// table: string, columns: array, where: empty string
+test("querySelect('member', ['age', 'name'], '') returns 'SELECT age, name FROM member'", () => {
+  const table = 'member'
+  const columns = ['age', 'name']
+  const where = ''
+  const call = alquery.querySelect(table, columns, where)
+  expect(call).toBe('SELECT age, name FROM member')
+})
+
+// table: string, columns: array, where: string
+test("querySelect('member', ['age', 'name'], '') returns 'SELECT age, name FROM member WHERE age = 24'", () => {
+  const table = 'member'
+  const columns = ['age', 'name']
+  const where = 'age = 24'
+  const call = alquery.querySelect(table, columns, where)
+  expect(call).toBe('SELECT age, name FROM member WHERE age = 24')
+})
+
+// table: string, columns: array, where: array
+test(`querySelect('member', ['age', 'name'], ['age = 24', 'gender = "male"']) returns 'SELECT age, name FROM member WHERE (age = 24) AND (gender = "male")'`, () => {
+  const table = 'member'
+  const columns = ['age', 'name']
+  const where = ['age = 24', 'gender = "male"']
+  const call = alquery.querySelect(table, columns, where)
+  expect(call).toBe(
+    'SELECT age, name FROM member WHERE (age = 24) AND (gender = "male")'
+  )
+})
+
+// table: string, columns: array, where: object
+test(`querySelect('member', ['age', 'name'], { age: 24, gender: '"male"' }) returns 'SELECT age, name FROM member WHERE WHERE (age = 24) AND (gender = "male")'`, () => {
+  const table = 'member'
+  const columns = ['age', 'name']
+  const where = { age: 24, gender: `"male"` }
+  const call = alquery.querySelect(table, columns, where)
+  expect(call).toBe(
+    'SELECT age, name FROM member WHERE (age = 24) AND (gender = "male")'
+  )
+})
