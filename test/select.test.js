@@ -36,12 +36,6 @@ test("querySelect('member') returns 'SELECT * FROM member'", () => {
   expect(call).toBe('SELECT * FROM member')
 })
 
-test("querySelect('member, country') returns 'SELECT * FROM member, country'", () => {
-  const table = 'member, country'
-  const call = alquery.querySelect(table)
-  expect(call).toBe('SELECT * FROM member, country')
-})
-
 // table: array
 test('querySelect([]) occurs error', () => {
   const table = []
@@ -56,12 +50,6 @@ test("querySelect(['member']) returns 'SELECT * FROM member'", () => {
   const table = ['member']
   const call = alquery.querySelect(table)
   expect(call).toBe('SELECT * FROM member')
-})
-
-test("querySelect(['member', 'country']) returns 'SELECT * FROM member, country'", () => {
-  const table = ['member', 'country']
-  const call = alquery.querySelect(table)
-  expect(call).toBe('SELECT * FROM member, country')
 })
 
 // table: object

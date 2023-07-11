@@ -70,7 +70,7 @@ const parseWhere = (where = null) => {
 
     if (where.constructor.name === 'String' && where.length) {
       clause += ` ${where}`
-    } else if (where.constructor.name === 'Arrar' && where.length) {
+    } else if (where.constructor.name === 'Array' && where.length) {
       where.forEach((condition, i) => {
         if (condition.toString().toUpperCase() === 'OR') {
           clause = clause.replace(/AND$/gi, 'OR')
@@ -78,14 +78,14 @@ const parseWhere = (where = null) => {
         }
 
         clause += ` (${condition})`
-        clause += i < where.length - 1 ? ' AND ' : ''
+        clause += i < where.length - 1 ? ' AND' : ''
       })
     } else if (where.constructor.name === 'Object') {
       const columns = Object.keys(where)
 
       if (columns.length) {
         columns.forEach((column, i) => {
-          if (column.toString().toUpperCase() === 'OR') {
+          if (column.toString().toUpperCase().indexOf('OR') === 0) {
             clause = clause.replace(/AND$/gi, 'OR')
             return
           }
