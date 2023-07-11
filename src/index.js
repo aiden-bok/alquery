@@ -17,12 +17,32 @@ const parseColumns = (columns = null) => {
   }
 }
 
-const parseLimit = () => {
-  return ``
+/**
+ * Returns after converting it into limit clause to be used in query statement using passed argument.
+ *
+ * @param {Number} [limit=0] Number of rows to return to be used in query statement. If `0` no limit in used.
+ * @returns {String} String converted to limit clause to be used in query statement.
+ */
+const parseLimit = (limit = 0) => {
+  return !isNaN(limit) && limit > 0 ? ` LIMIT ${limit}` : ''
 }
 
-const parseOrder = () => {
-  return ``
+/**
+ * Returns after converting it into order by clause to be used in query statement using passed argument.
+ *
+ * @param {String|Array} [order=null] Order by clause to be used in query statement.
+ * @returns {String} String converted to order by clause to be used in query statement.
+ */
+const parseOrder = (order = null) => {
+  if (order) {
+    if (order.constructor.name === 'String' && order.length) {
+      return ` ORDER BY ${order}`
+    } else if (order.constructor.name === 'Array' && order.length) {
+      return ` ORDER BY ${order.join(', ')}`
+    }
+  }
+
+  return ''
 }
 
 /**
@@ -155,6 +175,8 @@ const querySelect = (
 
 const alquery = {
   parseColumns,
+  parseLimit,
+  parseOrder,
   parseTable,
   parseWhere,
   querySelect
