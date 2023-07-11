@@ -19,7 +19,7 @@ test('parseTable(null) occurs error', () => {
   expect(call).toThrow(error)
 })
 
-// Empty string
+// empty string
 test("parseTable('') occurs error", () => {
   const table = ''
   const call = () => alquery.parseTable(table)
@@ -29,6 +29,7 @@ test("parseTable('') occurs error", () => {
   expect(call).toThrow(error)
 })
 
+// string
 test("parseTable('member') returns ' FROM member'", () => {
   const table = 'member'
   const call = alquery.parseTable(table)

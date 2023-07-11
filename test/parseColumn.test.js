@@ -13,7 +13,7 @@ test("parseColumns(null) returns ' *'", () => {
   expect(call).toBe(' *')
 })
 
-// Empty string
+// empty string
 test("parseColumns('') returns ' *'", () => {
   const columns = ''
   const call = alquery.parseColumns(columns)
