@@ -211,3 +211,28 @@ test(`querySelect('member', ['age', 'name'], { age: 24, gender: '"male"' }) retu
     'SELECT age, name FROM member WHERE (age = 24) AND (gender = "male")'
   )
 })
+
+// table: string, columns: array, where: object, order: string
+test(`querySelect('member', ['age', 'name'], { age: 24, gender: '"male"' }, 'age DESC') returns 'SELECT age, name FROM member WHERE WHERE (age = 24) AND (gender = "male") ORDER BY age DESC'`, () => {
+  const table = 'member'
+  const columns = ['age', 'name']
+  const where = { age: 24, gender: `"male"` }
+  const order = 'age DESC'
+  const call = alquery.querySelect(table, columns, where, order)
+  expect(call).toBe(
+    'SELECT age, name FROM member WHERE (age = 24) AND (gender = "male") ORDER BY age DESC'
+  )
+})
+
+// table: string, columns: array, where: object, order: string, limit: 10
+test(`querySelect('member', ['age', 'name'], { age: 24, gender: '"male"' }, 'age DESC', 10) returns 'SELECT age, name FROM member WHERE WHERE (age = 24) AND (gender = "male") ORDER BY age DESC LIMIT 10'`, () => {
+  const table = 'member'
+  const columns = ['age', 'name']
+  const where = { age: 24, gender: `"male"` }
+  const order = 'age DESC'
+  const limit = 10
+  const call = alquery.querySelect(table, columns, where, order, limit)
+  expect(call).toBe(
+    'SELECT age, name FROM member WHERE (age = 24) AND (gender = "male") ORDER BY age DESC LIMIT 10'
+  )
+})
