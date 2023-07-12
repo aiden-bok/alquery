@@ -32,29 +32,53 @@ const parseInsertValues = (values) => {
     )
   }
 
+  /**
+   * Returns a string with double quotation marks added if the string does not contain double quotation marks.
+   *
+   * @param {Any} value Value to add to the table.
+   * @returns Double quotes added if string.
+   */
+  const addQuotes = (value) => {
+    if (value.constructor.name === 'String') {
+      if (value.substring(0, 1) !== '"') {
+        value = `"${value}`
+      }
+      if (value.substring(value.length - 1) !== '"') {
+        value = `${value}"`
+      }
+    }
+
+    return value
+  }
+
   let clause = ''
 
-  if (values.constructor.name === 'Array') {
-    clause = ` VALUES (${values.join(', ')})`
-  } else if (values.constructor.name === 'Object') {
+  if (values.constructor.name === 'Object') {
     const cols = Object.keys(values)
 
     if (cols.length) {
       let vals = Object.values(values)
+      vals = vals.map((value) => addQuotes(value))
 
-      vals = vals.map((val) => {
-        if (val.constructor.name === 'String') {
-          if (val.substring(0, 1) !== '"') {
-            val = `"${val}`
-          }
-          if (val.substring(val.length - 1) !== '"') {
-            val = `${val}"`
-          }
-        }
-
-        return val
-      })
       clause += ` (${cols.join(', ')}) VALUES (${vals.join(', ')})`
+    }
+  } else if (values.constructor.name === 'Array' && values.length) {
+    values = values.map((value) => {
+      if (value.constructor.name === 'Array' && value.length) {
+        return value.map((val) => addQuotes(val))
+      } else {
+        return addQuotes(value)
+      }
+    })
+
+    if (values[0].constructor.name === 'Array') {
+      clause = ' VALUES '
+      values = values.map((value, v) => {
+        clause += `(${value.join(', ')})`
+        clause += v < values.length - 1 ? ', ' : ''
+      })
+    } else {
+      clause = ` VALUES (${values.join(', ')})`
     }
   }
 
