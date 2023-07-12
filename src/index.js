@@ -18,6 +18,56 @@ const parseColumns = (columns = null) => {
 }
 
 /**
+ * Returns after converting to string that column names and values to be used in `INSERT` query statement.
+ *
+ * @param {Object|Array} values Values object that consisting of column names and values to add to table. Or array of lists of values to add to the table.
+ * @throws {Error} Not passed object consisting of column and value to be used in INSERT query statement!
+ * @throws {Error} Object consisting of columns and values for use in an INSERT query statement was specified incorrectly!
+ * @returns {String} String converted to be insert values clause to be used in `INSERT` query statement.
+ */
+const parseInsertValues = (values) => {
+  if (!values) {
+    throw new Error(
+      '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement!'
+    )
+  }
+
+  let clause = ''
+
+  if (values.constructor.name === 'Array') {
+    clause = ` VALUES (${values.join(', ')})`
+  } else if (values.constructor.name === 'Object') {
+    const cols = Object.keys(values)
+
+    if (cols.length) {
+      let vals = Object.values(values)
+
+      vals = vals.map((val) => {
+        if (val.constructor.name === 'String') {
+          if (val.substring(0, 1) !== '"') {
+            val = `"${val}`
+          }
+          if (val.substring(val.length - 1) !== '"') {
+            val = `${val}"`
+          }
+        }
+
+        return val
+      })
+      clause += ` (${cols.join(', ')}) VALUES (${vals.join(', ')})`
+    }
+  }
+
+  if (!clause) {
+    throw new Error(
+      '[parseInsertValues] Object consisting of columns and values for use in an INSERT query statement was specified incorrectly!'
+    )
+  }
+
+  return clause
+}
+
+/**
  * Returns after converting it into limit clause to be used in query statement using passed argument.
  *
  * @param {Number} [limit=0] Number of rows to return to be used in query statement. If `0` no limit in used.
@@ -145,6 +195,28 @@ const parseWhere = (where = null) => {
 }
 
 /**
+ * Returns after created `INSERT` query statement using passed arguments.
+ *
+ * @param {String} table Table name to use in query statement.
+ * @param {Object|Array} values Values object that consisting of column names and values to add to table. Or array of lists of values to add to the table.
+ * @throws {Error} Not passed table name to be used in query statement!
+ * @throws {Error} Not passed object consisting of column and value to be used in INSERT query statement!
+ * @throws {Error} Object consisting of columns and values for use in an INSERT query statement was specified incorrectly!
+ * @returns {String} `INSERT` query statement created using passed arguments.
+ */
+const queryInsert = (table, values) => {
+  if (!table || table.constructor.name !== 'String') {
+    throw new Error(
+      '[queryInsert] Not passed table name to be used in query statement!'
+    )
+  }
+
+  return `INSERT INTO
+    ${table}
+    ${parseInsertValues(values)}`.replace(/\s{2,}/gi, ` `)
+}
+
+/**
  * Returns after created `SELECT` query statement using passed arguments.
  *
  * @param {String|Array} table Table name to use in query statement.
@@ -175,10 +247,12 @@ const querySelect = (
 
 const alquery = {
   parseColumns,
+  parseInsertValues,
   parseLimit,
   parseOrder,
   parseTable,
   parseWhere,
+  queryInsert,
   querySelect
 }
 
