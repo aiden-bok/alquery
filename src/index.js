@@ -24,7 +24,7 @@ const addQuotes = (value) => {
 /**
  * Returns after converting it into columns to be used in query statement using passed argument.
  *
- * @param {String|Array|Object} [columns=null] Columns to be used in query statement.
+ * @param {Array|String|Object} [columns=null] Columns to be used in query statement.
  * @returns {String} String converted to columns to be used in query statement.
  */
 const parseColumns = (columns = null) => {
@@ -43,7 +43,7 @@ const parseColumns = (columns = null) => {
 /**
  * Returns after converting to string that column names and values to be used in `INSERT` query statement.
  *
- * @param {Object|Array} values Values object that consisting of column names and values to add to table. Or array of lists of values to add to the table.
+ * @param {Object|String|Array} values Values object that consisting of column names and values to add to table. Or array of lists of values to add to the table.
  * @throws {Error} Not passed object consisting of column and value to be used in INSERT query statement!
  * @throws {Error} Object consisting of columns and values for use in an INSERT query statement was specified incorrectly!
  * @returns {String} String converted to be insert values clause to be used in `INSERT` query statement.
@@ -56,6 +56,15 @@ const parseInsertValues = (values) => {
   }
 
   let clause = ''
+  let insertValues = {}
+  const valuesToObject = (values) => {
+    if (values.toString().indexOf('=') > 0) {
+      const div = values.toString().split('=')
+      const key = div[0].replace(/^\s|\s$/gi, '')
+      const val = div[1].replace(/^\s|\s$/gi, '')
+      insertValues[key] = isNaN(val) ? val : Number(val)
+    }
+  }
 
   if (values.constructor.name === 'Object') {
     const cols = Object.keys(values)
@@ -77,12 +86,25 @@ const parseInsertValues = (values) => {
 
     if (values[0].constructor.name === 'Array') {
       clause = ' VALUES '
-      values = values.map((value, v) => {
+      values.forEach((value, v) => {
         clause += `(${value.join(', ')})`
         clause += v < values.length - 1 ? ', ' : ''
       })
     } else {
       clause = ` VALUES (${values.join(', ')})`
+    }
+  } else if (values?.constructor.name === 'String' && values.length) {
+    if (values.toString().indexOf('=') > 0) {
+      if (values.indexOf(',') > 0) {
+        values.split(',').forEach((separated) => {
+          valuesToObject(separated)
+        })
+      } else {
+        valuesToObject(values)
+      }
+      return parseInsertValues(JSON.parse(JSON.stringify(insertValues)))
+    } else {
+      clause = ` VALUES (${values})`
     }
   }
 
@@ -295,7 +317,7 @@ const parseWhere = (where = null) => {
  * Returns after created `INSERT` query statement using passed arguments.
  *
  * @param {String} table Table name to use in query statement.
- * @param {Object|Array} values Values object that consisting of column names and values to add to table. Or array of lists of values to add to the table.
+ * @param {Object|String|Array} values Values object that consisting of column names and values to add to table. Or array of lists of values to add to the table.
  * @throws {Error} Not passed table name to be used in query statement!
  * @throws {Error} Not passed object consisting of column and value to be used in INSERT query statement!
  * @throws {Error} Object consisting of columns and values for use in an INSERT query statement was specified incorrectly!
@@ -317,7 +339,7 @@ const queryInsert = (table, values) => {
  * Returns after created `SELECT` query statement using passed arguments.
  *
  * @param {String|Array} table Table name to use in query statement.
- * @param {String|Array|Object} [columns=null] Columns to be used in query statement.
+ * @param {Array|String|Object} [columns=null] Columns to be used in query statement.
  * @param {String|Array|Object} [where=null] Where condition to be used in query statement.
  * @param {String|Array|Object} [order=null] Order by clause to be used in query statement.
  * @param {Number} [limit=0] Number of rows to return to be used in query statement. If `0` no limit in used.
