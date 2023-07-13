@@ -151,6 +151,52 @@ const parseTable = (table) => {
 }
 
 /**
+ * Returns after converting to string it to be update column names and values to be used in `UPDATE` query statement.
+ *
+ * @param {Object|Array} values Values object that consisting of column names and values to be used in `UPDATE` query statement. Or array of lists of values to update to the table.
+ * @throws {Error} Not passed object consisting of column and value to be used in UPDATE query statement!
+ * @throws {Error} Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly!
+ * @returns {String} String converted to be update column names and values to be used in `UPDATE` query statement.
+ */
+const parseUpdateValues = (values) => {
+  if (!values) {
+    throw new Error(
+      '[parseUpdateValues] Not passed object consisting of column and value to be used in UPDATE query statement!'
+    )
+  }
+
+  let clause = ``
+
+  if (values?.constructor.name === 'Object') {
+    const keys = Object.keys(values)
+    if (keys.length) {
+      clause += ` SET `
+      keys.forEach((key, idx) => {
+        let val = values[key]
+        if (val.constructor.name === 'String') {
+          if (val.substring(0, 1) !== '"') {
+            val = `"${val}`
+          }
+          if (val.substring(val.length - 1) !== '"') {
+            val = `${val}"`
+          }
+        }
+        clause += `${key} = ${val}`
+        clause += idx < keys.length - 1 ? `, ` : ``
+      })
+    }
+  }
+
+  if (!clause) {
+    throw new Error(
+      '[parseUpdateValues] Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly!'
+    )
+  }
+
+  return clause
+}
+
+/**
  * Returns after converting it into where clause to be used in query statement using passed argument.
  *
  * @param {String|Array|Object} [where=null] Where condition to be used in query statement.
@@ -260,13 +306,43 @@ const querySelect = (
   limit = 0
 ) => {
   return `SELECT
-  ${parseColumns(columns)}
-  ${parseTable(table)}
-  ${parseWhere(where)}
-  ${parseOrder(order)}
-  ${parseLimit(limit)}`
+    ${parseColumns(columns)}
+    ${parseTable(table)}
+    ${parseWhere(where)}
+    ${parseOrder(order)}
+    ${parseLimit(limit)}`
     .replace(/\s{2,}/gi, ` `)
     .replace(/\s{1,}$/gi, ``)
+}
+
+/**
+ * Returns after created `UPDATE` query statement using passed arguments.
+ *
+ * @param {String} table Table name to use in query statement.
+ * @param {Object|Array} values Values object that consisting of column names and values to be used in `UPDATE` query statement. Or array of lists of values to update to the table.
+ * @param {String|Array|Object} where Where condition to be used in query statement.
+ * @throws {Error} Not passed table name to be used in query statement!
+ * @throws {Error} Not passed update condition clause to be used in UPDATE query statement!
+ * @throws {Error} Not passed object consisting of column and value to be used in UPDATE query statement!
+ * @throws {Error} Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly!
+ * @returns {String} `UPDATE` query statement created using passed arguments.
+ */
+const queryUpdate = (table, values, where) => {
+  if (!table || table.constructor.name !== 'String') {
+    throw new Error(
+      '[queryUpdate] Not passed table name to be used in query statement!'
+    )
+  }
+  if (!where) {
+    throw new Error(
+      '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    )
+  }
+
+  return `UPDATE
+    ${table}
+    ${parseUpdateValues(values)}
+    ${parseWhere(where)}`.replace(/\s{2,}/gi, ` `)
 }
 
 const alquery = {
@@ -275,9 +351,11 @@ const alquery = {
   parseLimit,
   parseOrder,
   parseTable,
+  parseUpdateValues,
   parseWhere,
   queryInsert,
-  querySelect
+  querySelect,
+  queryUpdate
 }
 
 export default alquery
