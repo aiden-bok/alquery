@@ -1,4 +1,27 @@
 /**
+ * Returns a string with double quotation marks added if the string does not contain double quotation marks.
+ *
+ * @param {Any} value Value to add to the table.
+ * @returns Double quotes added if string.
+ */
+const addQuotes = (value) => {
+  if (value.constructor.name === 'String') {
+    if (value.toString().indexOf('\\')) {
+      if (value.substring(0, 1) !== '"') {
+        value = `"${value}`
+      }
+      if (value.substring(value.length - 1) !== '"') {
+        value = `${value}"`
+      }
+    } else {
+      value = value.replace('\\', '')
+    }
+  }
+
+  return value
+}
+
+/**
  * Returns after converting it into columns to be used in query statement using passed argument.
  *
  * @param {String|Array|Object} [columns=null] Columns to be used in query statement.
@@ -30,25 +53,6 @@ const parseInsertValues = (values) => {
     throw new Error(
       '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement!'
     )
-  }
-
-  /**
-   * Returns a string with double quotation marks added if the string does not contain double quotation marks.
-   *
-   * @param {Any} value Value to add to the table.
-   * @returns Double quotes added if string.
-   */
-  const addQuotes = (value) => {
-    if (value.constructor.name === 'String') {
-      if (value.substring(0, 1) !== '"') {
-        value = `"${value}`
-      }
-      if (value.substring(value.length - 1) !== '"') {
-        value = `${value}"`
-      }
-    }
-
-    return value
   }
 
   let clause = ''
@@ -153,7 +157,7 @@ const parseTable = (table) => {
 /**
  * Returns after converting to string it to be update column names and values to be used in `UPDATE` query statement.
  *
- * @param {Object|Array} values Values object that consisting of column names and values to be used in `UPDATE` query statement. Or array of lists of values to update to the table.
+ * @param {Object|Array|String} values Values object that consisting of column names and values to be used in `UPDATE` query statement. Or array of lists of values to update to the table.
  * @throws {Error} Not passed object consisting of column and value to be used in UPDATE query statement!
  * @throws {Error} Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly!
  * @returns {String} String converted to be update column names and values to be used in `UPDATE` query statement.
@@ -165,26 +169,38 @@ const parseUpdateValues = (values) => {
     )
   }
 
-  let clause = ``
+  let clause = ''
+  let updateValues = {}
+  const valuesToObject = (values) => {
+    if (values.toString().indexOf('=') > 0) {
+      const div = values.toString().split('=')
+      const key = div[0].replace(/^\s|\s$/gi, '')
+      const val = div[1].replace(/^\s|\s$/gi, '')
+      updateValues[key] = isNaN(val) ? val : Number(val)
+    }
+  }
 
   if (values?.constructor.name === 'Object') {
     const keys = Object.keys(values)
     if (keys.length) {
-      clause += ` SET `
+      clause = ' SET '
       keys.forEach((key, idx) => {
-        let val = values[key]
-        if (val.constructor.name === 'String') {
-          if (val.substring(0, 1) !== '"') {
-            val = `"${val}`
-          }
-          if (val.substring(val.length - 1) !== '"') {
-            val = `${val}"`
-          }
-        }
-        clause += `${key} = ${val}`
+        clause += `${key} = ${addQuotes(values[key])}`
         clause += idx < keys.length - 1 ? `, ` : ``
       })
     }
+  } else if (values?.constructor.name === 'Array' && values.length) {
+    values = values.map((value) => valuesToObject(value))
+    return parseUpdateValues(JSON.parse(JSON.stringify(updateValues)))
+  } else if (values?.constructor.name === 'String' && values.length) {
+    if (values.indexOf(',') > 0) {
+      values.split(',').forEach((separated) => {
+        valuesToObject(separated)
+      })
+    } else {
+      valuesToObject(values)
+    }
+    return parseUpdateValues(JSON.parse(JSON.stringify(updateValues)))
   }
 
   if (!clause) {
@@ -319,7 +335,7 @@ const querySelect = (
  * Returns after created `UPDATE` query statement using passed arguments.
  *
  * @param {String} table Table name to use in query statement.
- * @param {Object|Array} values Values object that consisting of column names and values to be used in `UPDATE` query statement. Or array of lists of values to update to the table.
+ * @param {Object|Array|String} values Values object that consisting of column names and values to be used in `UPDATE` query statement. Or array of lists of values to update to the table.
  * @param {String|Array|Object} where Where condition to be used in query statement.
  * @throws {Error} Not passed table name to be used in query statement!
  * @throws {Error} Not passed update condition clause to be used in UPDATE query statement!
