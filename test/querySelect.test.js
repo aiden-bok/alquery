@@ -19,7 +19,7 @@ test('querySelect(null) occurs error', () => {
   expect(call).toThrow(error)
 })
 
-// table: empty string
+// table: string
 test("querySelect('') occurs error", () => {
   const table = ''
   const call = () => alquery.querySelect(table)
@@ -29,7 +29,6 @@ test("querySelect('') occurs error", () => {
   expect(call).toThrow(error)
 })
 
-// table: string
 test("querySelect('member') returns 'SELECT * FROM member'", () => {
   const table = 'member'
   const call = alquery.querySelect(table)
@@ -89,7 +88,7 @@ test("querySelect('member', null) returns 'SELECT * FROM member'", () => {
   expect(call).toBe('SELECT * FROM member')
 })
 
-// table: string, columns: empty string
+// table: string, columns: string
 test("querySelect('member', '') returns 'SELECT * FROM member'", () => {
   const table = 'member'
   const columns = ''
@@ -97,7 +96,6 @@ test("querySelect('member', '') returns 'SELECT * FROM member'", () => {
   expect(call).toBe('SELECT * FROM member')
 })
 
-// table: string, columns: string
 test("querySelect('member', '*') returns 'SELECT * FROM member'", () => {
   const table = 'member'
   const columns = '*'
@@ -172,7 +170,7 @@ test("querySelect('member', ['age', 'name'], null) returns 'SELECT age, name FRO
   expect(call).toBe('SELECT age, name FROM member')
 })
 
-// table: string, columns: array, where: empty string
+// table: string, columns: array, where: string
 test("querySelect('member', ['age', 'name'], '') returns 'SELECT age, name FROM member'", () => {
   const table = 'member'
   const columns = ['age', 'name']
@@ -181,13 +179,20 @@ test("querySelect('member', ['age', 'name'], '') returns 'SELECT age, name FROM 
   expect(call).toBe('SELECT age, name FROM member')
 })
 
-// table: string, columns: array, where: string
-test("querySelect('member', ['age', 'name'], '') returns 'SELECT age, name FROM member WHERE age = 24'", () => {
+test("querySelect('member', ['age', 'name'], 'age = 24') returns 'SELECT age, name FROM member WHERE age = 24'", () => {
   const table = 'member'
   const columns = ['age', 'name']
   const where = 'age = 24'
   const call = alquery.querySelect(table, columns, where)
   expect(call).toBe('SELECT age, name FROM member WHERE age = 24')
+})
+
+test("querySelect('member', ['age', 'name'], 'dateReg = NOW()') returns 'SELECT age, name FROM member WHERE dateReg = NOW()'", () => {
+  const table = 'member'
+  const columns = ['age', 'name']
+  const where = 'dateReg = NOW()'
+  const call = alquery.querySelect(table, columns, where)
+  expect(call).toBe('SELECT age, name FROM member WHERE dateReg = NOW()')
 })
 
 // table: string, columns: array, where: array
@@ -201,6 +206,16 @@ test(`querySelect('member', ['age', 'name'], ['age = 24', 'gender = "male"']) re
   )
 })
 
+test(`querySelect('member', ['age', 'name'], ['age = 24', 'dateReg = NOW()']) returns 'SELECT age, name FROM member WHERE (age = 24) AND (dateReg = NOW())'`, () => {
+  const table = 'member'
+  const columns = ['age', 'name']
+  const where = ['age = 24', 'dateReg = NOW()']
+  const call = alquery.querySelect(table, columns, where)
+  expect(call).toBe(
+    'SELECT age, name FROM member WHERE (age = 24) AND (dateReg = NOW())'
+  )
+})
+
 // table: string, columns: array, where: object
 test(`querySelect('member', ['age', 'name'], { age: 24, gender: '"male"' }) returns 'SELECT age, name FROM member WHERE WHERE (age = 24) AND (gender = "male")'`, () => {
   const table = 'member'
@@ -209,6 +224,16 @@ test(`querySelect('member', ['age', 'name'], { age: 24, gender: '"male"' }) retu
   const call = alquery.querySelect(table, columns, where)
   expect(call).toBe(
     'SELECT age, name FROM member WHERE (age = 24) AND (gender = "male")'
+  )
+})
+
+test(`querySelect('member', ['age', 'name'], { age: 24, dateReg: 'NOW()' }) returns 'SELECT age, name FROM member WHERE WHERE (age = 24) AND (dateReg = NOW())'`, () => {
+  const table = 'member'
+  const columns = ['age', 'name']
+  const where = { age: 24, dateReg: 'NOW()' }
+  const call = alquery.querySelect(table, columns, where)
+  expect(call).toBe(
+    'SELECT age, name FROM member WHERE (age = 24) AND (dateReg = NOW())'
   )
 })
 

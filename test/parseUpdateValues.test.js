@@ -19,7 +19,7 @@ test('parseUpdateValues(null) occurs error', () => {
   expect(call).toThrow(error)
 })
 
-// empty string
+// string
 test("parseUpdateValues('') occurs error", () => {
   const value = ''
   const call = () => alquery.parseUpdateValues(value)
@@ -29,7 +29,6 @@ test("parseUpdateValues('') occurs error", () => {
   expect(call).toThrow(error)
 })
 
-// string
 test("parseUpdateValues('age = 24') returns ' SET age = 24'", () => {
   const value = 'age = 24'
   const call = alquery.parseUpdateValues(value)

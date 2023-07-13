@@ -13,18 +13,29 @@ test("parseWhere(null) returns ''", () => {
   expect(call).toBe('')
 })
 
-// empty string
+// string
 test("parseWhere('') returns ''", () => {
   const where = ''
   const call = alquery.parseWhere(where)
   expect(call).toBe('')
 })
 
-// string
 test(`parseWhere('age = 24') returns ' WHERE age = 24'`, () => {
   const where = 'age = 24'
   const call = alquery.parseWhere(where)
   expect(call).toBe(' WHERE age = 24')
+})
+
+test(`parseWhere('name = "Aiden"') returns ' WHERE name = "Aiden"'`, () => {
+  const where = 'name = "Aiden"'
+  const call = alquery.parseWhere(where)
+  expect(call).toBe(' WHERE name = "Aiden"')
+})
+
+test(`parseWhere('dateReg = NOW()') returns ' WHERE dateReg = NOW()'`, () => {
+  const where = 'dateReg = NOW()'
+  const call = alquery.parseWhere(where)
+  expect(call).toBe(' WHERE dateReg = NOW()')
 })
 
 test(`parseWhere('age = 24 AND gender = "male"') returns ' WHERE age = 24 AND gender = "male"'`, () => {
@@ -58,6 +69,12 @@ test(`parseWhere(['age = 24', 'gender = "male"']) returns ' WHERE (age = 24) AND
   expect(call).toBe(' WHERE (age = 24) AND (gender = "male")')
 })
 
+test(`parseWhere(['age = 24', 'dateReg = NOW()']) returns ' WHERE (age = 24) AND (dateReg = NOW())'`, () => {
+  const where = ['age = 24', 'dateReg = NOW()']
+  const call = alquery.parseWhere(where)
+  expect(call).toBe(' WHERE (age = 24) AND (dateReg = NOW())')
+})
+
 test(`parseWhere(['age = 24', 'gender = "male"']) returns ' WHERE (age = 24) AND (gender = "male") OR (name = "Aiden")'`, () => {
   const where = ['age = 24', 'gender = "male"', 'OR', 'name = "Aiden"']
   const call = alquery.parseWhere(where)
@@ -83,6 +100,12 @@ test(`parseWhere({ age: 24, gender: "male" }) returns ' WHERE (age = 24) AND (ge
   const where = { age: 24, gender: `"male"` }
   const call = alquery.parseWhere(where)
   expect(call).toBe(' WHERE (age = 24) AND (gender = "male")')
+})
+
+test(`parseWhere({ age: 24, dateReg: NOW() }) returns ' WHERE (age = 24) AND (dateReg = NOW())'`, () => {
+  const where = { age: 24, dateReg: 'NOW()' }
+  const call = alquery.parseWhere(where)
+  expect(call).toBe(' WHERE (age = 24) AND (dateReg = NOW())')
 })
 
 test(`parseWhere({ age: '24', gender: "male", OR: true, name: "Aiden" }) returns ' WHERE (age = 24) AND (gender = "male") OR (name = "Aiden")'`, () => {

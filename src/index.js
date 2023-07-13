@@ -159,7 +159,7 @@ const parseOrder = (order = null) => {
 /**
  * Returns after converting it to be used in query statement using passed table name.
  *
- * @param {String|Array} table Table name to use in query statement.
+ * @param {String|Array|Object} table Table name to use in query statement.
  * @throws {Error} Not passed table name to be used in query statement!
  * @throws {Error} Table name to use in the query statement is not specified!
  * @returns {String} String converted to table name to be used in query statement.
@@ -338,7 +338,7 @@ const queryInsert = (table, values) => {
 /**
  * Returns after created `SELECT` query statement using passed arguments.
  *
- * @param {String|Array} table Table name to use in query statement.
+ * @param {String|Array|Object} table Table name to use in query statement.
  * @param {Array|String|Object} [columns=null] Columns to be used in query statement.
  * @param {String|Array|Object} [where=null] Where condition to be used in query statement.
  * @param {String|Array|Object} [order=null] Order by clause to be used in query statement.

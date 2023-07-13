@@ -13,14 +13,13 @@ test("parseLimit(null) returns ''", () => {
   expect(call).toBe('')
 })
 
-// empty string
+// string
 test("parseLimit('') returns ''", () => {
   const limit = ''
   const call = alquery.parseLimit(limit)
   expect(call).toBe('')
 })
 
-// string
 test("parseLimit('age') returns ''", () => {
   const limit = 'age'
   const call = alquery.parseLimit(limit)
