@@ -13,14 +13,13 @@ test("parseOrder(null) returns ''", () => {
   expect(call).toBe('')
 })
 
-// empty string
+// string
 test("parseOrder('') returns ''", () => {
   const order = ''
   const call = alquery.parseOrder(order)
   expect(call).toBe('')
 })
 
-// string
 test("parseOrder('age') returns ' ORDER BY age'", () => {
   const order = 'age'
   const call = alquery.parseOrder(order)
@@ -69,4 +68,16 @@ test("parseOrder({}) returns ''", () => {
   const order = {}
   const call = alquery.parseOrder(order)
   expect(call).toBe('')
+})
+
+test("parseOrder({ age: 'DESC' }) returns ' ORDER BY age DESC'", () => {
+  const order = { age: 'DESC' }
+  const call = alquery.parseOrder(order)
+  expect(call).toBe(' ORDER BY age DESC')
+})
+
+test("parseOrder({ age: 'DESC', name: '' }) returns ' ORDER BY age DESC, name'", () => {
+  const order = { age: 'DESC', name: '' }
+  const call = alquery.parseOrder(order)
+  expect(call).toBe(' ORDER BY age DESC, name')
 })

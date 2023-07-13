@@ -108,7 +108,7 @@ const parseLimit = (limit = 0) => {
 /**
  * Returns after converting it into order by clause to be used in query statement using passed argument.
  *
- * @param {String|Array} [order=null] Order by clause to be used in query statement.
+ * @param {String|Array|Object} [order=null] Order by clause to be used in query statement.
  * @returns {String} String converted to order by clause to be used in query statement.
  */
 const parseOrder = (order = null) => {
@@ -117,6 +117,17 @@ const parseOrder = (order = null) => {
       return ` ORDER BY ${order}`
     } else if (order.constructor.name === 'Array' && order.length) {
       return ` ORDER BY ${order.join(', ')}`
+    } else if (order.constructor.name === 'Object') {
+      const keys = Object.keys(order)
+      if (keys.length) {
+        let clause = ' ORDER BY '
+        keys.forEach((key, k) => {
+          clause += `${key} ${order[key]}`
+          clause += k < keys.length - 1 ? ', ' : ''
+        })
+
+        return clause.replace(/\s$/, '')
+      }
     }
   }
 
@@ -308,7 +319,7 @@ const queryInsert = (table, values) => {
  * @param {String|Array} table Table name to use in query statement.
  * @param {String|Array|Object} [columns=null] Columns to be used in query statement.
  * @param {String|Array|Object} [where=null] Where condition to be used in query statement.
- * @param {String|Array} [order=null] Order by clause to be used in query statement.
+ * @param {String|Array|Object} [order=null] Order by clause to be used in query statement.
  * @param {Number} [limit=0] Number of rows to return to be used in query statement. If `0` no limit in used.
  * @throws {Error} Not passed table name to be used in query statement!
  * @throws {Error} Table name to use in the query statement is not specified!
