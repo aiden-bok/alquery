@@ -1,6 +1,6 @@
 {
   "name": "alquery",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ALQuery(Aiden Library for database Queries) is a library that makes it easy to create database queries.",
   "keywords": [
     "database",
@@ -11,6 +11,15 @@
     "node",
     "query"
   ],
+  "homepage": "https://github.com/aiden-bok/alquery",
+  "bugs": {
+    "url": "https://github.com/aiden-bok/alquery/issues",
+    "email": "bokjaeoh@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aiden-bok/alquery.git"
+  },
   "author": "Aiden <bokjaeoh@gmail.com>",
   "license": "ISC",
   "engines": {
