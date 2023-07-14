@@ -140,16 +140,19 @@ test(`querySelect('member', {}) returns 'SELECT * FROM member'`, () => {
   expect(call).toBe('SELECT * FROM member')
 })
 
-test(`querySelect('member', { age: 24 }) returns 'SELECT age FROM member'`, () => {
+test(`querySelect('member', { age: 'Member Age' }) returns 'SELECT age FROM member'`, () => {
   const table = 'member'
-  const columns = { age: 24 }
+  const columns = { age: 'Member Age' }
   const call = alquery.querySelect(table, columns)
   expect(call).toBe('SELECT age FROM member')
 })
 
-test(`querySelect('member', { age: 24, name: 'Aiden'}) returns 'SELECT age, name FROM member'`, () => {
+test(`querySelect('member', { age: 'Member Age', name: 'Member Name' }) returns 'SELECT age, name FROM member'`, () => {
   const table = 'member'
-  const columns = { age: 24, name: 'Aiden' }
+  const columns = {
+    age: 'Member Age',
+    name: 'Member Name'
+  }
   const call = alquery.querySelect(table, columns)
   expect(call).toBe('SELECT age, name FROM member')
 })
