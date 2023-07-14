@@ -497,6 +497,47 @@ const querySelectJoin = (
 }
 
 /**
+ * Returns after created `SELECT` query statement for table join using passed arguments.
+ *
+ * @param {String|Array|Object} table Table name to use in query statement.
+ * @param {String} [type=null] Join type to be used in table join query statement.
+ * @param {String|Array} [join=null] Table name of joined target table to use in join query statement.
+ * @param {String} [on=null] Constraint for to use table join.
+ * @param {Array|String|Object} [columns=null] Columns to be used in query statement.
+ * @param {String|Array|Object} [where=null] Where condition to be used in query statement.
+ * @param {String|Array|Object} [group=null] Group by clause to be used in query statement.
+ * @param {String} [having=null] Having condition to be used in group by clause of query statement.
+ * @param {String|Array|Object} [order=null] Order by clause to be used in query statement.
+ * @param {Number} [limit=0] Number of rows to return to be used in query statement. If `0` no limit in used.
+ * @throws {Error} Not passed table name to be used in query statement!
+ * @throws {Error} Table name to use in the query statement is not specified!
+ * @returns {String} `SELECT` query statement for table join created using passed arguments.
+ */
+const querySelectJoinGroup = (
+  table,
+  type = null,
+  join = null,
+  on = null,
+  columns = null,
+  where = null,
+  group = null,
+  having = null,
+  order = null,
+  limit = 0
+) => {
+  return `SELECT
+    ${parseColumns(columns)}
+    ${parseTable(table)}
+    ${parseJoin(type, join, on)}
+    ${parseWhere(where)}
+    ${parseGroup(group, having)}
+    ${parseOrder(order)}
+    ${parseLimit(limit)}`
+    .replace(/\s{2,}/gi, ` `)
+    .replace(/\s{1,}$/gi, ``)
+}
+
+/**
  * Returns after created `UPDATE` query statement using passed arguments.
  *
  * @param {String} table Table name to use in query statement.
@@ -524,47 +565,6 @@ const queryUpdate = (table, values, where) => {
     ${table}
     ${parseUpdateValues(values)}
     ${parseWhere(where)}`.replace(/\s{2,}/gi, ` `)
-}
-
-/**
- * Returns after created `SELECT` query statement for table join using passed arguments.
- *
- * @param {String|Array|Object} table Table name to use in query statement.
- * @param {String} [type=null] Join type to be used in table join query statement.
- * @param {String|Array} [join=null] Table name of joined target table to use in join query statement.
- * @param {String} [on=null] Constraint for to use table join.
- * @param {Array|String|Object} [columns=null] Columns to be used in query statement.
- * @param {String|Array|Object} [where=null] Where condition to be used in query statement.
- * @param {String|Array|Object} [group=null] Group by clause to be used in query statement.
- * @param {String} [having=null] Having condition to be used in group by clause of query statement.
- * @param {String|Array|Object} [order=null] Order by clause to be used in query statement.
- * @param {Number} [limit=0] Number of rows to return to be used in query statement. If `0` no limit in used.
- * @throws {Error} Not passed table name to be used in query statement!
- * @throws {Error} Table name to use in the query statement is not specified!
- * @returns {String} `SELECT` query statement for table join created using passed arguments.
- */
-const querySelectJoinGroup = (
-  table,
-  type = null,
-  join = null,
-  on = null,
-  field = null,
-  where = null,
-  group = null,
-  having = null,
-  order = null,
-  limit = 0
-) => {
-  return `SELECT
-    ${parseColumns(field)}
-    ${parseTable(table)}
-    ${parseJoin(type, join, on)}
-    ${parseWhere(where)}
-    ${parseGroup(group, having)}
-    ${parseOrder(order)}
-    ${parseLimit(limit)}`
-    .replace(/\s{2,}/gi, ` `)
-    .replace(/\s{1,}$/gi, ``)
 }
 
 const alquery = {
