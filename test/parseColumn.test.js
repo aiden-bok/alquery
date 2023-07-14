@@ -64,16 +64,16 @@ test(`parseColumns({}) returns ' *'`, () => {
   expect(call).toBe(' *')
 })
 
-test(`parseColumns({age: 24}) returns ' age'`, () => {
-  const columns = { age: 24 }
+test(`parseColumns({ age: 'Member Age' }) returns ' age'`, () => {
+  const columns = { age: 'Member Age' }
   const call = alquery.parseColumns(columns)
   expect(call).toBe(' age')
 })
 
-test(`parseColumns({age: 24, name: 'Aiden'}) returns ' age, name'`, () => {
+test(`parseColumns({ age: 'Member Age', name: 'Member Name' }) returns ' age, name'`, () => {
   const columns = {
-    age: 24,
-    name: 'Aiden'
+    age: 'Member Age',
+    name: 'Member Name'
   }
   const call = alquery.parseColumns(columns)
   expect(call).toBe(' age, name')
