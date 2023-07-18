@@ -443,7 +443,7 @@ const querySelect = (
  */
 const querySelectGroup = (
   table,
-  field = null,
+  columns = null,
   where = null,
   group = null,
   having = null,
@@ -451,7 +451,7 @@ const querySelectGroup = (
   limit = 0
 ) => {
   return `SELECT
-    ${parseColumns(field)}
+    ${parseColumns(columns)}
     ${parseTable(table)}
     ${parseWhere(where)}
     ${parseGroup(group, having)}
