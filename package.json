@@ -1,6 +1,6 @@
 {
   "name": "alquery",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ALQuery(Aiden Library for database Queries) is a library that makes it easy to create database queries.",
   "keywords": [
     "database",
