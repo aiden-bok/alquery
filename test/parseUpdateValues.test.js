@@ -4,7 +4,7 @@ import alquery from '../src/index.js'
 test(`parseUpdateValues() occurs error`, () => {
   const call = () => alquery.parseUpdateValues()
   const error = new Error(
-    '[parseUpdateValues] Not passed object consisting of column and value to be used in UPDATE query statement!'
+    '[parseUpdateValues] Not passed object consisting of column and value to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -14,7 +14,7 @@ test(`parseUpdateValues(null) occurs error`, () => {
   const value = null
   const call = () => alquery.parseUpdateValues(value)
   const error = new Error(
-    '[parseUpdateValues] Not passed object consisting of column and value to be used in UPDATE query statement!'
+    '[parseUpdateValues] Not passed object consisting of column and value to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -24,7 +24,7 @@ test(`parseUpdateValues('') occurs error`, () => {
   const value = ''
   const call = () => alquery.parseUpdateValues(value)
   const error = new Error(
-    '[parseUpdateValues] Not passed object consisting of column and value to be used in UPDATE query statement!'
+    '[parseUpdateValues] Not passed object consisting of column and value to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -81,7 +81,7 @@ test(`parseUpdateValues('age, name') occurs error`, () => {
   const value = 'age, name'
   const call = () => alquery.parseUpdateValues(value)
   const error = new Error(
-    '[parseUpdateValues] Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly!'
+    '[parseUpdateValues] Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly.'
   )
   expect(call).toThrow(error)
 })
@@ -91,7 +91,7 @@ test(`parseUpdateValues([]) occurs error`, () => {
   const value = []
   const call = () => alquery.parseUpdateValues(value)
   const error = new Error(
-    '[parseUpdateValues] Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly!'
+    '[parseUpdateValues] Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly.'
   )
   expect(call).toThrow(error)
 })
@@ -124,7 +124,7 @@ test(`parseUpdateValues(['age', 'name']) occurs error`, () => {
   const value = ['age', 'name']
   const call = () => alquery.parseUpdateValues(value)
   const error = new Error(
-    '[parseUpdateValues] Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly!'
+    '[parseUpdateValues] Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly.'
   )
   expect(call).toThrow(error)
 })
@@ -134,7 +134,7 @@ test(`parseUpdateValues({}) occurs error`, () => {
   const value = {}
   const call = () => alquery.parseUpdateValues(value)
   const error = new Error(
-    '[parseUpdateValues] Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly!'
+    '[parseUpdateValues] Object consisting of columns and values for use in an UPDATE query statement was specified incorrectly.'
   )
   expect(call).toThrow(error)
 })

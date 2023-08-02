@@ -4,7 +4,7 @@ import alquery from '../src/index.js'
 test(`parseInsertValues() occurs error`, () => {
   const call = () => alquery.parseInsertValues()
   const error = new Error(
-    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement!'
+    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -14,7 +14,7 @@ test(`parseInsertValues(null) occurs error`, () => {
   const values = null
   const call = () => alquery.parseInsertValues(values)
   const error = new Error(
-    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement!'
+    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -24,7 +24,7 @@ test(`parseInsertValues('') occurs error`, () => {
   const values = ''
   const call = () => alquery.parseInsertValues(values)
   const error = new Error(
-    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement!'
+    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -76,7 +76,7 @@ test(`parseInsertValues([]) occurs error`, () => {
   const values = []
   const call = () => alquery.parseInsertValues(values)
   const error = new Error(
-    '[parseInsertValues] Object consisting of columns and values for use in an INSERT query statement was specified incorrectly!'
+    '[parseInsertValues] Object consisting of columns and values for use in an INSERT query statement was specified incorrectly.'
   )
   expect(call).toThrow(error)
 })
@@ -143,7 +143,7 @@ test(`parseInsertValues({}) occurs error`, () => {
   const values = {}
   const call = () => alquery.parseInsertValues(values)
   const error = new Error(
-    '[parseInsertValues] Object consisting of columns and values for use in an INSERT query statement was specified incorrectly!'
+    '[parseInsertValues] Object consisting of columns and values for use in an INSERT query statement was specified incorrectly.'
   )
   expect(call).toThrow(error)
 })

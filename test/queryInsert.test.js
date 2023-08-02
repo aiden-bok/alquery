@@ -4,7 +4,7 @@ import alquery from '../src/index.js'
 test(`queryInsert() occurs error`, () => {
   const call = () => alquery.queryInsert()
   const error = new Error(
-    '[queryInsert] Not passed table name to be used in query statement!'
+    '[queryInsert] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -14,7 +14,7 @@ test(`queryInsert(null) occurs error`, () => {
   const table = null
   const call = () => alquery.queryInsert(table)
   const error = new Error(
-    '[queryInsert] Not passed table name to be used in query statement!'
+    '[queryInsert] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -24,7 +24,7 @@ test(`queryInsert('') occurs error`, () => {
   const table = ''
   const call = () => alquery.queryInsert(table)
   const error = new Error(
-    '[queryInsert] Not passed table name to be used in query statement!'
+    '[queryInsert] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -34,7 +34,7 @@ test(`queryInsert('member') occurs error`, () => {
   const table = 'member'
   const call = () => alquery.queryInsert(table)
   const error = new Error(
-    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement!'
+    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -45,7 +45,7 @@ test(`queryInsert('member', null) occurs error`, () => {
   const values = null
   const call = () => alquery.queryInsert(table, values)
   const error = new Error(
-    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement!'
+    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -56,7 +56,7 @@ test(`queryInsert('member', '') occurs error`, () => {
   const values = ''
   const call = () => alquery.queryInsert(table, values)
   const error = new Error(
-    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement!'
+    '[parseInsertValues] Not passed object consisting of column and value to be used in INSERT query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -88,7 +88,7 @@ test(`queryInsert('member', []) occurs error`, () => {
   const values = []
   const call = () => alquery.queryInsert(table, values)
   const error = new Error(
-    '[parseInsertValues] Object consisting of columns and values for use in an INSERT query statement was specified incorrectly!'
+    '[parseInsertValues] Object consisting of columns and values for use in an INSERT query statement was specified incorrectly.'
   )
   expect(call).toThrow(error)
 })
@@ -130,7 +130,7 @@ test(`queryInsert('member', {}) occurs error`, () => {
   const values = {}
   const call = () => alquery.queryInsert(table, values)
   const error = new Error(
-    '[parseInsertValues] Object consisting of columns and values for use in an INSERT query statement was specified incorrectly!'
+    '[parseInsertValues] Object consisting of columns and values for use in an INSERT query statement was specified incorrectly.'
   )
   expect(call).toThrow(error)
 })
