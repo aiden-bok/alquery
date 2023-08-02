@@ -22,6 +22,66 @@ const addQuotes = (value) => {
 }
 
 /**
+ * Returns the generated query statement to execute the `MariaDB` procedure or function using the passed arguments.
+ *
+ * @param {String} target Procedure name or function name to execute.
+ * @param {Array|Object|String} [parameters=null] Parameters to pass when executing `MariaDB` procedure or function.
+ * @throws {Error} Not passed call target to be used in query statement.
+ * @throws {Error} Call target to use in the query statement is not specified.
+ * @throws {Error} Parameters for use in the Call query statement was incorrectly specified.
+ * @returns {String} Generated `CALL` query statement.
+ */
+const parseCall = (target, parameters = null) => {
+  if (!target) {
+    throw new Error(
+      '[parseCall] Not passed call target to be used in query statement.'
+    )
+  } else if (target.constructor.name !== 'String') {
+    throw new Error(
+      '[parseCall] Call target to use in the query statement is not specified.'
+    )
+  }
+
+  let params = ''
+  if (!parameters) {
+    params = '()'
+  } else if (parameters.constructor.name === 'Array') {
+    params = '('
+    parameters.forEach((param, idx) => {
+      params += '?'
+      params += idx < parameters.length - 1 ? ', ' : ''
+    })
+    params += ')'
+  } else if (parameters.constructor.name === 'Object') {
+    const keys = Object.keys(parameters)
+    if (keys.length) {
+      params = '('
+      keys.forEach((key, idx) => {
+        params += '?'
+        params += idx < keys.length - 1 ? ', ' : ''
+      })
+      params += ')'
+    }
+  } else if (parameters.constructor.name === 'String') {
+    const values = String.trim(parameters.split(','))
+    params = '('
+    values.forEach((value, idx) => {
+      params += '?'
+      params += idx < values.length - 1 ? ', ' : ''
+    })
+    params += ')'
+  }
+
+  if (!params || !params.startsWith('(') || !params.endsWith(')')) {
+    throw new Error(
+      '[parseCall] Parameters for use in the Call query statement was incorrectly specified.'
+    )
+  }
+
+  return target + params
+}
+
+/**
  * Returns after converting it into columns to be used in query statement using passed argument.
  *
  * @param {Array|String|Object} [columns=null] Columns to be used in query statement.
@@ -220,6 +280,37 @@ const parseOrder = (order = null) => {
 }
 
 /**
+ * Returns the generated parameters to execute the `MariaDB` procedure or function using the passed arguments.
+ *
+ * @param {Array|Object|String} [parameters=null] Parameters to pass when executing `MariaDB` procedure or function.
+ * @returns {Array} Parameters to be passed to the `CALL` query statement.
+ */
+const parseParameters = (parameters = null) => {
+  if (!parameters) return []
+
+  let params = []
+  if (parameters.constructor.name === 'Array') {
+    return params
+  } else if (parameters.constructor.name === 'Object') {
+    const keys = Object.keys(parameters)
+    if (keys.length) {
+      keys.forEach((key) => {
+        if (hasOwnProperty.call(parameters, key)) {
+          params.push(parameters.key)
+        }
+      })
+    }
+  } else if (parameters.constructor.name === 'String') {
+    const values = String.trim(parameters.split(','))
+    values.forEach((value) => {
+      params.push(value)
+    })
+  }
+
+  return params
+}
+
+/**
  * Returns after converting it to be used in query statement using passed table name.
  *
  * @param {String|Array|Object} table Table name to use in query statement.
@@ -374,6 +465,24 @@ const parseWhere = (where = null) => {
   }
 
   return clause === ' WHERE' ? '' : clause
+}
+
+/**
+ * @typedef {Object} CallQuery
+ * @property {String} query `CALL` query statement to execute.
+ * @property {Array} param Parameters to be passed to the `CALL` query statement.
+ */
+/**
+ * Returns object consisting of the query statement and parameters created to execute the `MariaDB` procedure or function using the passed arguments.
+ *
+ * @param {String} target Procedure name or function name to execute.
+ * @param {Array|Object|String} [parameters=null] Parameters to pass when executing `MariaDB` procedure or function.
+ * @returns {CallQuery} `CALL` query statement for executing `MariaDB` procedure or function.
+ */
+const queryCall = (target, parameters = null) => {
+  const query = `CALL ${parseCall(target, parameters)}`
+  const param = parseParameters(parameters)
+  return { query, param }
 }
 
 /**
@@ -568,15 +677,18 @@ const queryUpdate = (table, values, where) => {
 }
 
 const alquery = {
+  parseCall,
   parseColumns,
   parseGroup,
   parseInsertValues,
   parseJoin,
   parseLimit,
   parseOrder,
+  parseParameters,
   parseTable,
   parseUpdateValues,
   parseWhere,
+  queryCall,
   queryInsert,
   querySelect,
   querySelectGroup,
