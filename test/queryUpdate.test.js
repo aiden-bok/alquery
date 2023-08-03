@@ -4,7 +4,7 @@ import alquery from '../src/index.js'
 test(`queryUpdate() occurs error`, () => {
   const call = () => alquery.queryUpdate()
   const error = new Error(
-    '[queryUpdate] Not passed table name to be used in query statement!'
+    '[queryUpdate] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -14,7 +14,7 @@ test(`queryUpdate(null) occurs error`, () => {
   const table = null
   const call = () => alquery.queryUpdate(table)
   const error = new Error(
-    '[queryUpdate] Not passed table name to be used in query statement!'
+    '[queryUpdate] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -24,7 +24,7 @@ test(`queryUpdate('') occurs error`, () => {
   const table = ''
   const call = () => alquery.queryUpdate(table)
   const error = new Error(
-    '[queryUpdate] Not passed table name to be used in query statement!'
+    '[queryUpdate] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -34,7 +34,7 @@ test(`queryUpdate('member') occurs error`, () => {
   const table = 'member'
   const call = () => alquery.queryUpdate(table)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -45,7 +45,7 @@ test(`queryUpdate('member', null) occurs error`, () => {
   const values = null
   const call = () => alquery.queryUpdate(table, values)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -56,7 +56,7 @@ test(`queryUpdate('member', '') occurs error`, () => {
   const values = ''
   const call = () => alquery.queryUpdate(table, values)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -66,7 +66,7 @@ test(`queryUpdate('member', 'age = 24') occurs error`, () => {
   const values = 'age = 24'
   const call = () => alquery.queryUpdate(table, values)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -77,7 +77,7 @@ test(`queryUpdate('member', []) occurs error`, () => {
   const values = []
   const call = () => alquery.queryUpdate(table, values)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -87,7 +87,7 @@ test(`queryUpdate('member', ['age = 24']) occurs error`, () => {
   const values = ['age = 24']
   const call = () => alquery.queryUpdate(table, values)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -98,7 +98,7 @@ test(`queryUpdate('member', {}) occurs error`, () => {
   const values = {}
   const call = () => alquery.queryUpdate(table, values)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -108,7 +108,7 @@ test(`queryUpdate('member', { age: 24 }) occurs error`, () => {
   const values = { age: 24 }
   const call = () => alquery.queryUpdate(table, values)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -120,7 +120,7 @@ test(`queryUpdate('member', 'age = 24', null) occurs error`, () => {
   const where = null
   const call = () => alquery.queryUpdate(table, values, where)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -132,7 +132,7 @@ test(`queryUpdate('member', ['age = 24'], null) occurs error`, () => {
   const where = null
   const call = () => alquery.queryUpdate(table, values, where)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -144,7 +144,7 @@ test(`queryUpdate('member', { age: 24 }, null) occurs error`, () => {
   const where = null
   const call = () => alquery.queryUpdate(table, values, where)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -156,7 +156,7 @@ test(`queryUpdate('member', 'age = 24', '') occurs error`, () => {
   const where = ''
   const call = () => alquery.queryUpdate(table, values, where)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -176,7 +176,7 @@ test(`queryUpdate('member', ['age = 24'], '') occurs error`, () => {
   const where = ''
   const call = () => alquery.queryUpdate(table, values, where)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -196,7 +196,7 @@ test(`queryUpdate('member', { age: 24 }, '') occurs error`, () => {
   const where = ''
   const call = () => alquery.queryUpdate(table, values, where)
   const error = new Error(
-    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement!'
+    '[queryUpdate] Not passed update condition clause to be used in UPDATE query statement.'
   )
   expect(call).toThrow(error)
 })
