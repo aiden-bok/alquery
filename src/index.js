@@ -53,17 +53,17 @@ const parseCall = (target, parameters = null) => {
     })
     params += ')'
   } else if (parameters.constructor.name === 'Object') {
+    params = '('
     const keys = Object.keys(parameters)
     if (keys.length) {
-      params = '('
       keys.forEach((key, idx) => {
         params += '?'
         params += idx < keys.length - 1 ? ', ' : ''
       })
-      params += ')'
     }
+    params += ')'
   } else if (parameters.constructor.name === 'String') {
-    const values = String.trim(parameters.split(','))
+    const values = parameters.split(',')
     params = '('
     values.forEach((value, idx) => {
       params += '?'
@@ -71,7 +71,6 @@ const parseCall = (target, parameters = null) => {
     })
     params += ')'
   }
-
   if (!params || !params.startsWith('(') || !params.endsWith(')')) {
     throw new Error(
       '[parseCall] Parameters for use in the Call query statement was incorrectly specified.'
