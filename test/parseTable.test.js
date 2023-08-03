@@ -4,7 +4,7 @@ import alquery from '../src/index.js'
 test(`parseTable() occurs error`, () => {
   const call = () => alquery.parseTable()
   const error = new Error(
-    '[parseTable] Not passed table name to be used in query statement!'
+    '[parseTable] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -14,7 +14,7 @@ test(`parseTable(null) occurs error`, () => {
   const table = null
   const call = () => alquery.parseTable(table)
   const error = new Error(
-    '[parseTable] Not passed table name to be used in query statement!'
+    '[parseTable] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -24,7 +24,7 @@ test(`parseTable('') occurs error`, () => {
   const table = ''
   const call = () => alquery.parseTable(table)
   const error = new Error(
-    '[parseTable] Not passed table name to be used in query statement!'
+    '[parseTable] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -46,7 +46,7 @@ test(`parseTable([]) occurs error`, () => {
   const table = []
   const call = () => alquery.parseTable(table)
   const error = new Error(
-    '[parseTable] Table name to use in the query statement is not specified!'
+    '[parseTable] Table name to use in the query statement is not specified.'
   )
   expect(call).toThrow(error)
 })
@@ -68,7 +68,7 @@ test(`parseTable({}) occurs error`, () => {
   const table = {}
   const call = () => alquery.parseTable(table)
   const error = new Error(
-    '[parseTable] Table name to use in the query statement is not specified!'
+    '[parseTable] Table name to use in the query statement is not specified.'
   )
   expect(call).toThrow(error)
 })
