@@ -4,7 +4,7 @@ import alquery from '../src/index.js'
 test(`querySelectJoin() occurs error`, () => {
   const call = () => alquery.querySelectJoin()
   const error = new Error(
-    '[parseTable] Not passed table name to be used in query statement!'
+    '[parseTable] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -14,7 +14,7 @@ test(`querySelectJoin('') occurs error`, () => {
   const table = ''
   const call = () => alquery.querySelectJoin(table)
   const error = new Error(
-    '[parseTable] Not passed table name to be used in query statement!'
+    '[parseTable] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -36,7 +36,7 @@ test(`querySelectJoin([]) occurs error`, () => {
   const table = []
   const call = () => alquery.querySelectJoin(table)
   const error = new Error(
-    '[parseTable] Table name to use in the query statement is not specified!'
+    '[parseTable] Table name to use in the query statement is not specified.'
   )
   expect(call).toThrow(error)
 })
@@ -58,7 +58,7 @@ test(`querySelectJoin({}) occurs error`, () => {
   const table = {}
   const call = () => alquery.querySelectJoin(table)
   const error = new Error(
-    '[parseTable] Table name to use in the query statement is not specified!'
+    '[parseTable] Table name to use in the query statement is not specified.'
   )
   expect(call).toThrow(error)
 })
@@ -81,7 +81,7 @@ test(`querySelectJoin('', '') occurs error`, () => {
   const type = ''
   const call = () => alquery.querySelectJoin(table, type)
   const error = new Error(
-    '[parseTable] Not passed table name to be used in query statement!'
+    '[parseTable] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -107,7 +107,7 @@ test(`querySelectJoin('', '', '') occurs error`, () => {
   const join = ''
   const call = () => alquery.querySelectJoin(table, type, join)
   const error = new Error(
-    '[parseTable] Not passed table name to be used in query statement!'
+    '[parseTable] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
@@ -135,7 +135,7 @@ test(`querySelectJoin('', '', []) occurs error`, () => {
   const join = []
   const call = () => alquery.querySelectJoin(table, type, join)
   const error = new Error(
-    '[parseTable] Not passed table name to be used in query statement!'
+    '[parseTable] Not passed table name to be used in query statement.'
   )
   expect(call).toThrow(error)
 })
